@@ -1,11 +1,13 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
+import { useRotation } from "../../RotationContext"; // Import the useRotation hook
 
 import CanvasLoader from "../Loader";
 
 const Computers = ({ isMobile }) => {
   const computer = useGLTF("./rick/scene.gltf");
+  const { rotate } = useRotation(); // Use the rotation state
 
   return (
     <mesh>
@@ -23,7 +25,7 @@ const Computers = ({ isMobile }) => {
         object={computer.scene}
         scale={isMobile ? 0.05 : 0.05}
         position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
-        rotation={[-0.01, -0.2, -0.1]}
+        rotation={rotate ? [-0.01, -0.2 + Math.PI, -0.1] : [-0.01, -0.2, -0.1]} // Apply rotation to the model
       />
     </mesh>
   );

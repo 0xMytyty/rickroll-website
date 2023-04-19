@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useRotation } from "../RotationContext"; // Import the useRotation hook
+
 
 import { styles } from "../styles";
 import { navLinks } from "../constants";
@@ -7,6 +9,8 @@ import { logo, menu, close } from "../assets";
 
 const Navbar = () => {
   const [musicPlaying, setMusicPlaying] = useState(false);
+  const { setRotate } = useRotation(); // Use the setRotate function from the context
+
 
   const playMusic = () => {
     if (!musicPlaying) {
@@ -28,9 +32,12 @@ const Navbar = () => {
       document.documentElement.msRequestFullscreen();
     }
     playMusic();
+    setRotate((prevRotate) => !prevRotate); // Toggle the rotation state
+
     document.addEventListener("fullscreenchange", () => {
       if (!document.fullscreenElement) {
         alert("You got Rickrolled !!");
+        setRotate(false); // Reset the rotation state when exiting fullscreen
       }
     });
     
